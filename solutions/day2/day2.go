@@ -1,24 +1,43 @@
-package main
+package day2
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strconv"
 	"strings"
+
+	"github.com/llauderesv/aoc-2024/utils"
 )
 
-func convertArrayStringToInt(strs []string) []int {
-	var ints []int
-	for _, str := range strs {
-		if num, err := strconv.Atoi(str); err == nil {
-			ints = append(ints, num)
+func PartOne() int {
+	input := utils.ReadInput("inputs/day2.txt")
+	var count int
+	for _, v := range strings.Split(input, "\n") {
+		if v != "" {
+			count++
+			arr := utils.ConvertArrayStringToInt(strings.Split(v, " "))
+			if !isValid(arr) {
+				count--
+			}
 		}
 	}
-	return ints
+
+	return count
 }
 
-// Part one
+func PartTwo() int {
+	input := utils.ReadInput("inputs/day2.txt")
+	var count int
+	for _, v := range strings.Split(input, "\n") {
+		if v != "" {
+			count++
+			arr := utils.ConvertArrayStringToInt(strings.Split(v, " "))
+			if !isValidWrapper(arr) {
+				count--
+			}
+		}
+	}
+
+	return count
+}
+
 func isValid(arr []int) bool {
 	j := arr[0]
 	tmp := 0
@@ -55,7 +74,6 @@ func isValid(arr []int) bool {
 	return true
 }
 
-// Part two
 func isValidWrapper(arr []int) bool {
 	s := len(arr)
 	for i := 0; i < s; i++ {
@@ -73,30 +91,4 @@ func isValidWrapper(arr []int) bool {
 	}
 
 	return false
-
-}
-
-func parseInput() {
-	scanner := bufio.NewScanner(os.Stdin)
-	record := 0
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
-			break
-		}
-
-		arr := convertArrayStringToInt(strings.Fields(line))
-		record++
-		if !isValidWrapper(arr) {
-			record--
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		fmt.Println("Error reading input:", err)
-		os.Exit(1)
-	}
-
-	fmt.Printf("Total Safe Record: %d", record)
 }
